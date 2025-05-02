@@ -1,0 +1,111 @@
+.error-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #eef2ff, #dbeafe);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+.error-code-wrapper {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: bold;
+  color: #818cf8;
+  opacity: 0.2;
+}
+
+@media (min-width: 768px) {
+  .error-code {
+    font-size: 12rem;
+  }
+
+  .error-text {
+    font-size: 3.5rem;
+  }
+
+  .error-message {
+    font-size: 1.25rem;
+  }
+}
+
+.error-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #4338ca;
+}
+
+.error-message {
+  color: #4b5563;
+  max-width: 28rem;
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background-color: #4f46e5;
+  color: white;
+  font-weight: 500;
+  border-radius: 9999px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #4338ca;
+}
+
+.back-text {
+  margin-right: 0.5rem;
+}
+
+.back-icon {
+  height: 1.25rem;
+  width: 1.25rem;
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover .back-icon {
+  transform: translateX(4px);
+}
+
+.button-pulse {
+  position: absolute;
+  inset: 0;
+  background-color: #818cf8;
+  border-radius: 9999px;
+  opacity: 0;
+  transform: scale(1);
+  z-index: -1;
+  transition: all 0.5s ease;
+}
+
+.back-button:hover .button-pulse {
+  opacity: 1;
+  transform: scale(1.25);
+}
+
+.decorative-icon {
+  margin-top: 3rem;
+  opacity: 0.3;
+}
+
+.decorative-svg {
+  color: #c7d2fe;
+}
