@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import adminAvatar from "../../assets/img/admin-avatar.png";
 
 const Sidebar = () => {
@@ -28,12 +28,12 @@ const Sidebar = () => {
             <li>
               <a href="javascript:;">
                 <i className="sidebar-item-icon fa fa-bookmark"></i>
-                <span className="nav-label">Basic UI</span>
+                <span className="nav-label">Inventory</span>
                 <i className="fa fa-angle-left arrow"></i>
               </a>
               <ul className="nav-2-level collapse">
                 <li>
-                  <a href="colors.html">Colors</a>
+                  <Link to={"/products"} href="colors.html">Products</Link>
                 </li>
                 <li>
                   <a href="typography.html">Typography</a>

@@ -1,0 +1,13 @@
+.visitors-table tbody tr td:last-child {
+  display: flex;
+  align-items: center;
+}
+
+.visitors-table .progress {
+  flex: 1;
+}
+
+.visitors-table .progress-parcent {
+  text-align: right;
+  margin-left: 10px;
+}
