@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./ErrorPage.css";
 
 const ErrorPage = () => {
@@ -14,7 +13,7 @@ const ErrorPage = () => {
         Oops! The page you're looking for doesn't exist or has been moved.
       </p>
 
-      <Link to="/" className="back-button">
+      <a href="/" className="back-button">
         <span className="back-text">Back to Home</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +28,7 @@ const ErrorPage = () => {
           />
         </svg>
         <span className="button-pulse"></span>
-      </Link>
+      </a>
 
       <div className="decorative-icon">
         <svg

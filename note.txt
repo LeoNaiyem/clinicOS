@@ -1,0 +1,2 @@
+ //package.json
+  "homepage": "http://naiyem.intelsofts.com/Projects/React/clinic-os",

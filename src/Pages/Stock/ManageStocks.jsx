@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Products = () => {
-  // const productsJSON = useLoaderData();
-  // const productsObj = JSON.parse(productsJSON);
-  const [products,setProducts]=useState([]);
-  // const products = productsObj.products;
+const ManageStocks = () => {
+  const [stocks,setStocks]=useState([]);
   const navigate = useNavigate();
 
   useEffect(()=>{
-    fetch("/api/product")
+    fetch("/api/stock")
       .then((res) => res.json())
-      .then((data) => setProducts(data.products));
-  },[products])
+      .then((data) => setStocks(data.stocks));
+  },[stocks])
 
    const deleteProduct = async (id) => {
      try {
@@ -67,31 +64,28 @@ const Products = () => {
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Photo</th>
-                    <th>Name</th>
-                    <th>Regular Price</th>
-                    <th>Offer Price</th>
+                    <th>Product Id</th>
+                    <th>Quantity</th>
+                    <th>Transaction Type</th>
+                    <th>Remarks</th>
+                    <th>Warehouse Id</th>
+                    <th>Created at</th>
                     <th className="text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
-                    <tr key={product.id}>
-                      <td>{product.id}</td>
-                      <td>
-                        <img
-                          className="rounded-3 object-cover"
-                          src={`http://naiyem.intelsofts.com/Projects/core/core_elysianFabrics/img/${product.photo}`}
-                          width="40"
-                        />
-                      </td>
-                      <td>{product.name}</td>
-                      <td>{product.regular_price}</td>
-                      <td>{product.offer_price}</td>
+                  {stocks.map((stock) => (
+                    <tr key={stock.id}>
+                      <td>{stock.id}</td>
+                      <td>{stock.product_id}</td>
+                      <td>{stock.qty}</td>
+                      <td>{stock.transaction_type_id}</td>
+                      <td>{stock.warehouse_id}</td>
+                      <td>{stock.created_at}</td>
                       <td className="text-center">
                         <button
                           onClick={() =>
-                            navigate("/product/detail", { state: product })
+                            navigate("/stock/detail", { state: stock })
                           }
                           className="btn btn-info"
                         >
@@ -99,14 +93,14 @@ const Products = () => {
                         </button>
                         <button
                           onClick={() =>
-                            navigate("/product/edit", { state: product })
+                            navigate("/stock/edit", { state: stock })
                           }
                           className="btn btn-primary mx-1"
                         >
                           Edit
                         </button>
                         <button
-                          onClick={() => handleDelete(product.id)}
+                          onClick={() => handleDelete(stock.id)}
                           className="btn btn-danger"
                         >
                           Delete
@@ -124,4 +118,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default ManageStocks;

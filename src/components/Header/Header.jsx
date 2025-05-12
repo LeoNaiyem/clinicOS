@@ -1,8 +1,8 @@
-import React from 'react';
-import adminAvatar from "../..//assets/img/admin-avatar.png";
-import u1 from "../../assets/img/users/u1.jpg";
-import u2 from "../../assets/img/users/u2.jpg";
-import u3 from "../../assets/img/users/u3.jpg";
+import adminNaiyem from "../../../public/img/admin-naiyem.jpg";
+import logoMin from "../../../public/img/logos/logo-min2.svg";
+import logo from "../../../public/img/logos/logo2.svg";
+
+
 const Header = () => {
     return (
         <>
@@ -10,11 +10,12 @@ const Header = () => {
       <header className="header">
         <div className="page-brand">
           <a className="link" href="index.html">
-            <span className="brand"
-              >Admin
-              <span className="brand-tip">CAST</span>
+            <span className="brand">
+              <img width="150px" src={logo} alt="logo"/>
             </span>
-            <span className="brand-mini">AC</span>
+            <span className="brand-mini">
+                <img src={logoMin} alt="logo-min" />
+            </span>
           </a>
         </div>
         <div className="flexbox flex-1">
@@ -58,7 +59,7 @@ const Header = () => {
                     <a className="list-group-item">
                       <div className="media">
                         <div className="media-img">
-                          <img src={u1} />
+                          <img src="img/users/u1.jpg" />
                         </div>
                         <div className="media-body">
                           <div className="font-strong"></div>
@@ -74,7 +75,7 @@ const Header = () => {
                     <a className="list-group-item">
                       <div className="media">
                         <div className="media-img">
-                          <img src={u2} />
+                          <img src="img/users/u2.jpg" />
                         </div>
                         <div className="media-body">
                           <div className="font-strong"></div>
@@ -88,7 +89,7 @@ const Header = () => {
                     <a className="list-group-item">
                       <div className="media">
                         <div className="media-img">
-                          <img src={u3} />
+                          <img src="img/users/u3.jpg" />
                         </div>
                         <div className="media-body">
                           <div className="font-strong"></div>
@@ -193,7 +194,7 @@ const Header = () => {
             </li>
             <li className="dropdown dropdown-user">
               <a className="nav-link dropdown-toggle link" data-toggle="dropdown">
-                <img src={adminAvatar} />
+                <img src={adminNaiyem} alt="admin" />
                 <span></span>Admin<i className="fa fa-angle-down m-l-5"></i
               ></a>
               <ul className="dropdown-menu dropdown-menu-right">

@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Products = () => {
-  // const productsJSON = useLoaderData();
-  // const productsObj = JSON.parse(productsJSON);
-  const [products,setProducts]=useState([]);
-  // const products = productsObj.products;
+const Suppliers = () => {
+//   const suppliersJSON = useLoaderData();
+//   const suppliersObj = JSON.parse(suppliersJSON);
+//   const suppliers = suppliersObj.suppliers;
+const [suppliers,setSuppliers] =useState([]);
   const navigate = useNavigate();
 
   useEffect(()=>{
-    fetch("/api/product")
-      .then((res) => res.json())
-      .then((data) => setProducts(data.products));
-  },[products])
+      fetch("/api/supplier")
+        .then((res) => res.json())
+        .then((data) => setSuppliers(data.suppliers));
+    },[suppliers])
 
    const deleteProduct = async (id) => {
      try {
        const res = await fetch(
-         `/api/product/delete`,
+         `/api/supplier/delete`,
          {
            method: "DELETE",
            headers: {
@@ -48,7 +48,7 @@ const Products = () => {
         <div className="col-lg-12">
           <div className="ibox">
             <div className="ibox-head">
-              <div className="ibox-title">All Products</div>
+              <div className="ibox-title">Suppliers</div>
               <div className="ibox-tools">
                 <a className="ibox-collapse">
                   <i className="fa fa-minus"></i>
@@ -69,29 +69,29 @@ const Products = () => {
                     <th>ID</th>
                     <th>Photo</th>
                     <th>Name</th>
-                    <th>Regular Price</th>
-                    <th>Offer Price</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
                     <th className="text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
-                    <tr key={product.id}>
-                      <td>{product.id}</td>
+                  {suppliers.map((supplier) => (
+                    <tr key={supplier.id}>
+                      <td>{supplier.id}</td>
                       <td>
                         <img
                           className="rounded-3 object-cover"
-                          src={`http://naiyem.intelsofts.com/Projects/core/core_elysianFabrics/img/${product.photo}`}
+                          src={`http://naiyem.intelsofts.com/Projects/core/core_elysianFabrics/img/${supplier.photo}`}
                           width="40"
                         />
                       </td>
-                      <td>{product.name}</td>
-                      <td>{product.regular_price}</td>
-                      <td>{product.offer_price}</td>
+                      <td>{supplier.name}</td>
+                      <td>{supplier.mobile}</td>
+                      <td>{supplier.email}</td>
                       <td className="text-center">
                         <button
                           onClick={() =>
-                            navigate("/product/detail", { state: product })
+                            navigate("/supplier/detail", { state: supplier })
                           }
                           className="btn btn-info"
                         >
@@ -99,14 +99,14 @@ const Products = () => {
                         </button>
                         <button
                           onClick={() =>
-                            navigate("/product/edit", { state: product })
+                            navigate("/supplier/edit", { state: supplier })
                           }
                           className="btn btn-primary mx-1"
                         >
                           Edit
                         </button>
                         <button
-                          onClick={() => handleDelete(product.id)}
+                          onClick={() => handleDelete(supplier.id)}
                           className="btn btn-danger"
                         >
                           Delete
@@ -124,4 +124,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Suppliers;
