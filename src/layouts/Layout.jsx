@@ -16,8 +16,13 @@ const Layout = () => {
                     <Footer/>
                 </div>
             </div>
+<<<<<<< HEAD
             <ThemeConfig/>
             {/* <PreLoader/> */}
+=======
+            <ThemeConfig/>                                                          
+            <PreLoader/>
+>>>>>>> 7e6f7a848d77add12a1e3ff16f3d56089fef78ed
         </>
     );
 };

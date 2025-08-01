@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Custom styles to enhance Bootstrap */
 .card {
   transition: all 0.3s ease;
@@ -88,4 +89,35 @@
     font-weight: bold;
     margin-right: 1rem;
   }
+=======
+select {
+  padding: 5px;
+  min-width: 200px;
+}
+
+textarea {
+  width: 100%;
+}
+
+.invoice-container {
+  padding: 20px;
+  background: #fff;
+  margin: 20px;
+}
+
+.purchase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.col {
+  flex: 1;
+>>>>>>> 7e6f7a848d77add12a1e3ff16f3d56089fef78ed
 }
