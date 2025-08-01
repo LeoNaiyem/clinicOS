@@ -48,8 +48,12 @@ const CreateBom = () => {
     const fetchData = async () => {
       try {
         const [productsRes, uomsRes] = await Promise.all([
-          axios.get("/api/product"),
-          axios.get("/api/uom"),
+          axios.get(
+            "/.netlify/functions/api-proxy/api/product"
+          ),
+          axios.get(
+            "/.netlify/functions/api-proxy/api/uom"
+          ),
         ]);
 
         setProducts(productsRes.data.products);
@@ -124,11 +128,15 @@ const CreateBom = () => {
 
       console.log("Submitting:", payload); // Debug log
 
-      const response = await axios.post("/api/mfgbom/save", payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        "/.netlify/functions/api-proxy/mfgbom/save",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.data.success === "yes") {
         setSuccess(true);

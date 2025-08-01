@@ -44,8 +44,12 @@ const ManageBoms = () => {
     const fetchData = async () => {
       try {
         const [bomsRes, productsRes] = await Promise.all([
-          axios.get("/api/mfgbom"),
-          axios.get("/api/product"),
+          axios.get(
+            "/.netlify/functions/api-proxy/mfgbom"
+          ),
+          axios.get(
+            "/.netlify/functions/api-proxy/product"
+          ),
         ]);
 
         setBoms(bomsRes.data.mfg_boms);
@@ -105,7 +109,7 @@ const ManageBoms = () => {
   const handleUpdate = async () => {
     try {
       const updatedBom = await axios.put(
-        `/api/mfgbom/update/${selectedBom.id}`,
+        `http://naiyem.intelsofts.com/Projects/core/core_elysianFabrics/api/mfgbom/update/${selectedBom.id}`,
         editFormData
       );
       setBoms(
@@ -130,7 +134,7 @@ const ManageBoms = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `/delete/${selectedBom.id}`
+        `http://naiyem.intelsofts.com/Projects/core/core_elysianFabrics/api/delete/${selectedBom.id}`
       );
       setBoms(boms.filter((bom) => bom.id !== selectedBom.id));
       setShowDeleteModal(false);
