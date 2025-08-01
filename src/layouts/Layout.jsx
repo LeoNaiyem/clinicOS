@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Footer from '../components/Footer/Footer';
 import Header from '../components/Header/Header';
@@ -16,13 +15,8 @@ const Layout = () => {
                     <Footer/>
                 </div>
             </div>
-<<<<<<< HEAD
             <ThemeConfig/>
             {/* <PreLoader/> */}
-=======
-            <ThemeConfig/>                                                          
-            <PreLoader/>
->>>>>>> 7e6f7a848d77add12a1e3ff16f3d56089fef78ed
         </>
     );
 };

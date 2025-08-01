@@ -28,7 +28,7 @@ const CreateBom = () => {
 
   // Additional state
   const [products, setProducts] = useState([]);
-  const [rawMaterials, setRawMaterials] = useState([]);
+  // const [rawMaterials, setRawMaterials] = useState([]);
   const [uoms, setUoms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [productLoading, setProductLoading] = useState(true);
@@ -57,6 +57,7 @@ const CreateBom = () => {
         setProductLoading(false);
       } catch (err) {
         setError("Failed to load dropdown data");
+        console.log(err);
         setProductLoading(false);
       }
     };

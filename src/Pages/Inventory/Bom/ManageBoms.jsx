@@ -116,6 +116,7 @@ const ManageBoms = () => {
       setShowEditModal(false);
     } catch (err) {
       setError("Failed to update BOM");
+      console.log(err)
     }
   };
 
@@ -135,6 +136,7 @@ const ManageBoms = () => {
       setShowDeleteModal(false);
     } catch (err) {
       setError("Failed to delete BOM");
+      console.log(err)
     }
   };
 
