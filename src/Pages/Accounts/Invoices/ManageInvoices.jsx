@@ -2,28 +2,29 @@ import axios from "axios";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import {
-    Alert,
-    Badge,
-    Button,
-    Card,
-    Col,
-    Container,
-    Form,
-    InputGroup,
-    Modal,
-    Pagination,
-    Row,
-    Spinner,
-    Table
+  Alert,
+  Badge,
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Modal,
+  Pagination,
+  Row,
+  Spinner,
+  Table
 } from "react-bootstrap";
 import {
-    FaEdit,
-    FaEye,
-    FaFileInvoice,
-    FaPrint,
-    FaSearch,
-    FaTrash,
+  FaEdit,
+  FaEye,
+  FaFileInvoice,
+  FaPrint,
+  FaSearch,
+  FaTrash,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import './Invoice.css';
 
 const ManageInvoices = () => {
@@ -40,6 +41,10 @@ const ManageInvoices = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [invoicesPerPage] = useState(10);
   const [customers, setCustomers] = useState([]);
+  const [company, setCompany] = useState(null);
+  const [invoiceDetails, setInvoiceDetails] = useState([]);
+  const [invoiceProducts, setInvoiceProducts] = useState([]);
+  const [filteredDetails,setFilteredDetails]=useState([]);
 
   // Payment term options
   const paymentTerms = [
@@ -60,13 +65,17 @@ const ManageInvoices = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [invoicesRes, customersRes] = await Promise.all([
+        const [invoicesRes, customersRes, companyRes,invoiceDetailsRes] = await Promise.all([
           axios.get("/api/invoice"),
           axios.get("/api/customer"),
+          axios.get("/api/company/find/2"),
+          axios.get("/api/invoicedetail"),
         ]);
 
         setInvoices(invoicesRes.data.invoices);
         setCustomers(customersRes.data.customers);
+        setCompany(companyRes.data.company);
+        setInvoiceDetails(invoiceDetailsRes.data.invoice_details);
         setLoading(false);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch data");
@@ -98,30 +107,60 @@ const ManageInvoices = () => {
   const totalPages = Math.ceil(filteredInvoices.length / invoicesPerPage);
 
   // View invoice details
+
+
   const handleView = async (invoice) => {
     try {
       setLoading(true);
-      // Fetch invoice items from API
-      const res = await axios.get(`/api/invoice/${invoice.id}/items`);
+
+      // Filter invoice details first
+      const filtered = invoiceDetails.filter(
+        (detail) => detail.invoice_id == invoice.id
+      );
+      setFilteredDetails(filtered);
+
+      // Then fetch product details for each item
+      const productsWithDetails = await Promise.all(
+        filtered.map(async (detail) => {
+          try {
+            const productRes = await axios.get(
+              `/api/product/find/${detail.product_id}`
+            );
+            return {
+              ...detail,
+              product: productRes.data.product || {},
+            };
+          } catch (err) {
+            console.error(`Failed to fetch product ${detail.product_id}:`, err);
+            return {
+              ...detail,
+              product: { name: "Unknown Product" },
+            };
+          }
+        })
+      );
+
       setSelectedInvoice({
         ...invoice,
-        items: res.data.items || [],
+        items: productsWithDetails,
       });
+
       setShowViewModal(true);
     } catch (err) {
-      setError("Failed to load invoice items");
-      console.log(err)
+      setError("Failed to load invoice details");
+      console.error(err);
       setSelectedInvoice(invoice);
       setShowViewModal(true);
     } finally {
       setLoading(false);
     }
   };
+  console.log(selectedInvoice)
 
 //Print invoice
   const handlePrintInvoice = (invoiceId) => {
     // Create a new window for printing
-    const printWindow = window.open("", "_blank");
+    const printWindow = window.open("", "", "width=900,height=1000, top=50, left=300");
 
     // Get the HTML content to print
     const printContent = document.getElementById(
@@ -231,7 +270,7 @@ const ManageInvoices = () => {
       </Container>
     );
   }
-
+  console.log("invoice selected",invoiceProducts.product_id);
   return (
     <Container fluid className="py-4">
       {error && (
@@ -247,9 +286,11 @@ const ManageInvoices = () => {
       <Card className="shadow-sm">
         <Card.Header className="bg-primary text-white d-flex justify-content-between align-items-center">
           <h2 className="mb-0">Invoice Management</h2>
-          <Button variant="light" size="sm">
-            <FaFileInvoice className="me-2" /> Create New Invoice
-          </Button>
+          <Link to="/accounts/invoice/create">
+            <Button variant="light" size="sm">
+              <FaFileInvoice className="me-2" /> Create New Invoice
+            </Button>
+          </Link>
         </Card.Header>
 
         <Card.Body>
@@ -269,7 +310,7 @@ const ManageInvoices = () => {
                   />
                 </InputGroup>
               </Col>
-              <Col md={6} className="text-end">
+              <Col md={6} className="text-right">
                 <Badge bg="secondary" className="fs-6">
                   {filteredInvoices.length} Invoices
                 </Badge>
@@ -300,7 +341,7 @@ const ManageInvoices = () => {
                         <td>INV-{invoice.id}</td>
                         <td>{getCustomerName(invoice.customer_id)}</td>
                         <td>{formatDate(invoice.created_at)}</td>
-                        <td className="text-end">
+                        <td className="text-right">
                           ৳{parseFloat(invoice.invoice_total).toFixed(2)}
                         </td>
                         <td>{invoice.payment_term}</td>
@@ -412,20 +453,22 @@ const ManageInvoices = () => {
                 <Col md={6}>
                   <div className="d-flex align-items-center mb-3">
                     <img
-                      src="/img/logo.png"
-                      alt="Company Logo"
-                      style={{ height: "60px", marginRight: "15px" }}
+                      src={`http://naiyem.intelsofts.com/Projects/core/core_elysianFabrics/img/${company.logo}`}
+                      alt={company.name}
+                      width="150"
+                      style={{ objectFit: "cover", height: "110px" }}
+                      className="img-fluid"
                     />
                     <div>
-                      <h4 className="mb-0">Your Company Name</h4>
+                      <h4 className="mb-0">{company.name}</h4>
                       <p className="mb-0 text-muted">
-                        123 Business Street, City
+                        {company.street_address}, {company.city}
                       </p>
                       <p className="mb-0 text-muted">Tax ID: 123456789</p>
                     </div>
                   </div>
                 </Col>
-                <Col md={6} className="text-end">
+                <Col md={6} className="text-right pr-4">
                   <h3 className="text-primary">INVOICE</h3>
                   <p className="mb-1">
                     <strong>Invoice #:</strong> INV-{selectedInvoice.id}
@@ -457,9 +500,11 @@ const ManageInvoices = () => {
                         </strong>
                       </p>
                       {/* Add customer address if available */}
-                      <p className="mb-1 text-muted">Customer Address Line 1</p>
-                      <p className="mb-1 text-muted">Customer Address Line 2</p>
-                      <p className="mb-0 text-muted">Phone: Customer Phone</p>
+                      <p className="mb-1 text-muted">370/Cha, Saudi Colony</p>
+                      <p className="mb-1 text-muted">
+                        Dhaka Cantonment, Dahaka-1206
+                      </p>
+                      <p className="mb-0 text-muted">Phone: +8801547896523</p>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -475,7 +520,7 @@ const ManageInvoices = () => {
                             <td>
                               <strong>Subtotal:</strong>
                             </td>
-                            <td className="text-end">
+                            <td className="text-right">
                               ৳
                               {parseFloat(
                                 selectedInvoice.invoice_total
@@ -486,19 +531,19 @@ const ManageInvoices = () => {
                             <td>
                               <strong>Discount:</strong>
                             </td>
-                            <td className="text-end">৳0.00</td>
+                            <td className="text-right">৳0.00</td>
                           </tr>
                           <tr>
                             <td>
                               <strong>Tax/VAT:</strong>
                             </td>
-                            <td className="text-end">৳0.00</td>
+                            <td className="text-right">৳0.00</td>
                           </tr>
                           <tr className="border-top">
                             <td>
                               <strong>Total:</strong>
                             </td>
-                            <td className="text-end">
+                            <td className="text-right">
                               <strong>
                                 ৳
                                 {parseFloat(
@@ -511,7 +556,7 @@ const ManageInvoices = () => {
                             <td>
                               <strong>Paid Amount:</strong>
                             </td>
-                            <td className="text-end">
+                            <td className="text-right">
                               ৳
                               {parseFloat(selectedInvoice.paid_total).toFixed(
                                 2
@@ -522,7 +567,7 @@ const ManageInvoices = () => {
                             <td>
                               <strong>Due Amount:</strong>
                             </td>
-                            <td className="text-end">
+                            <td className="text-right">
                               <strong>
                                 ৳
                                 {(
@@ -557,13 +602,24 @@ const ManageInvoices = () => {
                       selectedInvoice.items.map((item, index) => (
                         <tr key={index}>
                           <td>{index + 1}</td>
-                          <td>{item.description || `Product ${index + 1}`}</td>
-                          <td className="text-center">{item.quantity || 1}</td>
-                          <td className="text-end">
-                            ৳{parseFloat(item.unit_price || 0).toFixed(2)}
+                          <td>
+                            {item.product?.name || `Product ${item.product_id}`}
+                            {item.product?.description && (
+                              <div className="text-muted small">
+                                {item.product.description}
+                              </div>
+                            )}
                           </td>
-                          <td className="text-end">
-                            ৳{parseFloat(item.total || 0).toFixed(2)}
+                          <td className="text-center">{item.quantity || 1}</td>
+                          <td className="text-right">
+                            ৳{parseFloat(item.price || 0).toFixed(2)}
+                          </td>
+                          <td className="text-right">
+                            ৳
+                            {(
+                              parseFloat(item.price || 0) *
+                              parseFloat(item.quantity || 1)
+                            ).toFixed(2)}
                           </td>
                         </tr>
                       ))
@@ -575,24 +631,24 @@ const ManageInvoices = () => {
                       </tr>
                     )}
                     <tr>
-                      <td colSpan="4" className="text-end">
+                      <td colSpan="4" className="text-right">
                         <strong>Subtotal</strong>
                       </td>
-                      <td className="text-end">
+                      <td className="text-right">
                         ৳{parseFloat(selectedInvoice.invoice_total).toFixed(2)}
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan="4" className="text-end">
+                      <td colSpan="4" className="text-right">
                         <strong>Tax/VAT</strong>
                       </td>
-                      <td className="text-end">৳0.00</td>
+                      <td className="text-right">৳0.00</td>
                     </tr>
                     <tr>
-                      <td colSpan="4" className="text-end">
+                      <td colSpan="4" className="text-right">
                         <strong>Total</strong>
                       </td>
-                      <td className="text-end">
+                      <td className="text-right">
                         ৳{parseFloat(selectedInvoice.invoice_total).toFixed(2)}
                       </td>
                     </tr>
@@ -620,7 +676,7 @@ const ManageInvoices = () => {
                 <p className="text-muted">
                   If you have any questions about this invoice, please contact
                   <br />
-                  support@yourcompany.com | Phone: +880 1234 567890
+                  {company.email} | Phone: {company.mobile}
                 </p>
               </div>
             </div>

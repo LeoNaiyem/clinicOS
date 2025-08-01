@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function ProductDetails() {
@@ -45,7 +45,7 @@ function ProductDetails() {
           </div>
           <div className="d-flex gap-2">
             <Link
-              to='/products'
+              to="/inventory/products/manage"
               className="btn btn-outline-secondary btn-sm mr-2"
             >
               <i className="fa-solid fa-arrow-left mr-1"></i> Back

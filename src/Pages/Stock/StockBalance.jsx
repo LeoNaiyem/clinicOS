@@ -32,17 +32,20 @@ const StockBalance = () => {
     setError(null);
 
     try {
-      const response = await fetch("/api/stock/balance", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          page,
-          perpage: stockData.per_page,
-          criteria: buildCriteria(),
-        }),
-      });
+      const response = await fetch(
+        "/api/stock/balance",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            page,
+            perpage: stockData.per_page,
+            criteria: buildCriteria(),
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

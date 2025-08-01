@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import adminNaiyem from "../../../public/img/admin-naiyem.jpg";
+import adminNaiyem from "../../assets/img/admin-naiyem.jpg";
 const Sidebar = () => {
   return (
     <>
@@ -28,12 +28,12 @@ const Sidebar = () => {
               </a>
               <ul className="nav-2-level collapse">
                 <li>
-                  <Link to={"/products"} href="colors.html">
+                  <Link to={"/"} href="colors.html">
                     Home
                   </Link>
                 </li>
                 <li>
-                  <Link to={"/products"}>Summary</Link>
+                  <Link to={"/summary"}>Summary</Link>
                 </li>
               </ul>
             </li>
@@ -60,16 +60,16 @@ const Sidebar = () => {
               </a>
               <ul className="nav-2-level collapse">
                 <li>
-                  <Link to={"/products"}>Create BOM</Link>
+                  <Link to={"/inventory/bom/create"}>Create BOM</Link>
                 </li>
                 <li>
-                  <Link to={"/products"}>Manage BOM</Link>
+                  <Link to={"/inventory/bom/manage"}>Manage BOM</Link>
                 </li>
                 <li>
-                  <Link to={"/products"}>Build Product</Link>
+                  <Link to={"/inventory/products/create"}>Build Product</Link>
                 </li>
                 <li>
-                  <Link to={"/products"}>Manage Product</Link>
+                  <Link to={"/inventory/products/manage"}>Manage Product</Link>
                 </li>
               </ul>
             </li>
@@ -130,10 +130,10 @@ const Sidebar = () => {
               </a>
               <ul className="nav-2-level collapse">
                 <li>
-                  <Link to={"/products"}>Create MR</Link>
+                  <Link to={"/accounts/money-receipt/create"}>Create MR</Link>
                 </li>
                 <li>
-                  <Link to={"/products"}>Manage MR</Link>
+                  <Link to={"/accounts/money-receipt/manage"}>Manage MR</Link>
                 </li>
                 <li>
                   <Link to={"/accounts/invoice/create"}>Create Invoice</Link>

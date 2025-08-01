@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Products = () => {
+const ManageProducts = () => {
   // const productsJSON = useLoaderData();
   // const productsObj = JSON.parse(productsJSON);
   const [products,setProducts]=useState([]);
@@ -91,7 +91,9 @@ const Products = () => {
                       <td className="text-center">
                         <button
                           onClick={() =>
-                            navigate("/product/detail", { state: product })
+                            navigate("/inventory/product/detail", {
+                              state: product,
+                            })
                           }
                           className="btn btn-info"
                         >
@@ -99,7 +101,9 @@ const Products = () => {
                         </button>
                         <button
                           onClick={() =>
-                            navigate("/product/edit", { state: product })
+                            navigate("/inventory/product/edit", {
+                              state: product,
+                            })
                           }
                           className="btn btn-primary mx-1"
                         >
@@ -124,4 +128,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default ManageProducts;

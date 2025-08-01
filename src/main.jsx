@@ -1,19 +1,23 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ErrorPage from "./components/ErrorPage/ErrorPage.jsx";
+import { ToastContainer } from "react-toastify";
 import Home from "./components/Home/Home.jsx";
-import EditProduct from "./components/Products/EditPruduct.jsx";
-import ProductDetails from "./components/Products/ProductDetails.jsx";
-import Products from "./components/Products/Products.jsx";
 import Statistics from "./components/Statistics/Statistics.jsx";
+import DashboardSummary from "./components/Summary/Summary.jsx";
 import "./index.css";
 import Layout from "./layouts/Layout.jsx";
 import CreateInvoice from "./Pages/Accounts/Invoices/CreateInvoice.jsx";
-import EditInvoice from "./Pages/Accounts/Invoices/EditInvoice.jsx";
 import ManageInvoices from "./Pages/Accounts/Invoices/ManageInvoices.jsx";
-import ViewInvoice from "./Pages/Accounts/Invoices/ViewInvoice.jsx";
+import CreateMoneyReceipts from "./Pages/Accounts/MoneyReceipts/CreateMoneyReceipts.jsx";
+import ManageMoneyReceipts from "./Pages/Accounts/MoneyReceipts/ManageMoneyReceipt.jsx";
 import CreateDelivery from "./Pages/Delivery/CreateDelivery.jsx";
+import CreateBom from "./Pages/Inventory/Bom/CreateBom.jsx";
+import ManageBoms from "./Pages/Inventory/Bom/ManageBoms.jsx";
+import BuildProduct from "./Pages/Inventory/Products/BuildProduct.jsx";
+import EditProduct from "./Pages/Inventory/Products/EditProduct.jsx";
+import ManageProducts from "./Pages/Inventory/Products/ManageProducts.jsx";
+import ProductDetails from "./Pages/Inventory/Products/ProductDetails.jsx";
 import CreateOrder from "./Pages/Order/CreateOrder.jsx";
 import ManageOrders from "./Pages/Order/ManageOrders.jsx";
 import ManagePurchase from "./Pages/Purchase/ManagePurchase/ManagePurchase.jsx";
@@ -29,11 +33,15 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <Layout />,
-      errorElement: <ErrorPage />,
+      // errorElement: <ErrorPage />,
       children: [
         {
           index: true,
           element: <Home />,
+        },
+        {
+          path: 'summary',
+          element: <DashboardSummary />,
         },
         {
           path: "purchase-raw-materials",
@@ -68,16 +76,28 @@ const router = createBrowserRouter(
           element: <ManageOrders />,
         },
         {
-          path: "products",
-          element: <Products />,
+          path: "inventory/products/create",
+          element: <BuildProduct />,
         },
         {
-          path: "product/detail",
+          path: "inventory/products/manage",
+          element: <ManageProducts />,
+        },
+        {
+          path: "inventory/products/detail",
           element: <ProductDetails />,
         },
         {
-          path: "product/edit",
+          path: "inventory/products/edit",
           element: <EditProduct />,
+        },
+        {
+          path: "inventory/bom/create",
+          element: <CreateBom />,
+        },
+        {
+          path: "inventory/bom/manage",
+          element: <ManageBoms />,
         },
         {
           path: "statistics",
@@ -104,22 +124,21 @@ const router = createBrowserRouter(
           element: <ManageInvoices />,
         },
         {
-          path: "accounts/invoice/details/:id",
-          element: <ViewInvoice />,
+          path: "accounts/money-receipt/create",
+          element: <CreateMoneyReceipts />,
         },
         {
-          path: "accounts/invoice/edit/:id",
-          element: <EditInvoice />,
+          path: "accounts/money-receipt/manage",
+          element: <ManageMoneyReceipts />,
         },
       ],
     },
   ],
-  {
-    basename: "/Projects/React/clinic-os/", // Add basename here
-  }
+  
 );
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={router}></RouterProvider>
+    <ToastContainer />
   </StrictMode>
 );
