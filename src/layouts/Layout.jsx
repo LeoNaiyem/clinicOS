@@ -16,7 +16,7 @@ const Layout = () => {
                 </div>
             </div>
             <ThemeConfig/>
-            <PreLoader/>
+            {/* <PreLoader/> */}
         </>
     );
 };
